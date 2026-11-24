@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="DesktopFlow.App.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="DesktopFlow">
+    <Grid x:Name="Root" Background="{ThemeResource AppBackgroundBrush}">
+        <NavigationView
+            x:Name="Nav"
+            IsBackButtonVisible="Collapsed"
+            IsSettingsVisible="False"
+            PaneDisplayMode="Left"
+            OpenPaneLength="248"
+            CompactModeThresholdWidth="760"
+            ExpandedModeThresholdWidth="1100"
+            ItemInvoked="Nav_ItemInvoked">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Tag="overview" Icon="Home" Content="{Binding [Nav_Overview], Source={StaticResource Loc}}" />
+                <NavigationViewItem Tag="desktop" Icon="Folder" Content="{Binding [Nav_Desktop], Source={StaticResource Loc}}" />
+                <NavigationViewItem Tag="downloads" Icon="Download" Content="{Binding [Nav_Downloads], Source={StaticResource Loc}}" />
+                <NavigationViewItem Tag="organizer" Icon="List" Content="{Binding [Nav_Organizer], Source={StaticResource Loc}}" />
+                <NavigationViewItem Tag="rules" Icon="Filter" Content="{Binding [Nav_Rules], Source={StaticResource Loc}}" />
+                <NavigationViewItem Tag="activity" Icon="Clock" Content="{Binding [Nav_Activity], Source={StaticResource Loc}}" />
+                <NavigationViewItem Tag="settings" Icon="Setting" Content="{Binding [Nav_Settings], Source={StaticResource Loc}}" />
+            </NavigationView.MenuItems>
+            <NavigationView.PaneFooter>
+                <StackPanel Spacing="2" Margin="8,8,8,12">
+                    <TextBlock
+                        Text="{Binding VersionLabel}"
+                        Foreground="{ThemeResource AppMutedBrush}"
+                        Margin="12,0,12,4" />
+                    <HyperlinkButton Content="{Binding [Footer_GitHub], Source={StaticResource Loc}}" Command="{Binding OpenGitHubCommand}" Margin="4,0,0,0" />
+                    <HyperlinkButton Content="{Binding [Footer_Updates], Source={StaticResource Loc}}" Command="{Binding CheckUpdatesCommand}" Margin="4,0,0,0" />
+                    <TextBlock
+                        Text="{Binding UpdateStatus}"
+                        Foreground="{ThemeResource AppMutedBrush}"
+                        TextWrapping="WrapWholeWords"
+                        Margin="12,4,12,0" />
+                </StackPanel>
+            </NavigationView.PaneFooter>
+            <Frame x:Name="ContentFrame" />
+        </NavigationView>
+    </Grid>
+</Window>

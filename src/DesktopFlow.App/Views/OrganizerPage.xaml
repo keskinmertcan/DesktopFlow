@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="DesktopFlow.App.Views.OrganizerPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:DesktopFlow.App.ViewModels"
+    x:DefaultBindMode="OneWay">
+    <ScrollViewer Padding="28,20,28,28">
+        <StackPanel Spacing="16" MaxWidth="860">
+            <StackPanel Spacing="4">
+                <TextBlock Style="{StaticResource PageTitleStyle}" Text="{Binding [Organizer_Title], Source={StaticResource Loc}}" />
+                <TextBlock Style="{StaticResource PageSubtitleStyle}" Text="{Binding [Organizer_Subtitle], Source={StaticResource Loc}}" />
+                <TextBlock Style="{StaticResource PageSubtitleStyle}" Text="{Binding [Organizer_Hint], Source={StaticResource Loc}}" />
+            </StackPanel>
+            <InfoBar IsOpen="{x:Bind ViewModel.HasError}" Severity="Error" Message="{x:Bind ViewModel.ErrorMessage}" IsClosable="False" />
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <Button Content="{Binding [Organizer_Desktop], Source={StaticResource Loc}}" Command="{x:Bind ViewModel.UseDesktopCommand}" />
+                <Button Content="{Binding [Organizer_Downloads], Source={StaticResource Loc}}" Command="{x:Bind ViewModel.UseDownloadsCommand}" />
+                <TextBlock VerticalAlignment="Center" Margin="12,0,0,0" Text="{x:Bind ViewModel.ScopeLabel}" />
+            </StackPanel>
+            <ItemsControl ItemsSource="{x:Bind ViewModel.Groups}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:MappingGroupItem">
+                        <Border Style="{StaticResource SurfaceBorderStyle}" Margin="0,0,0,8">
+                            <Grid ColumnSpacing="12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="{Binding [Organizer_Path], Source={StaticResource Loc}}" Foreground="{ThemeResource AppMutedBrush}" />
+                                    <TextBox Text="{x:Bind RelativePath, Mode=TwoWay}" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Spacing="4">
+                                    <TextBlock Text="{Binding [Organizer_Extensions], Source={StaticResource Loc}}" Foreground="{ThemeResource AppMutedBrush}" />
+                                    <TextBox Text="{x:Bind Extensions, Mode=TwoWay}" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <Button Content="{Binding [Organizer_Save], Source={StaticResource Loc}}" Command="{x:Bind ViewModel.SaveCommand}" Style="{StaticResource AccentButtonStyle}" />
+                <Button Content="{Binding [Organizer_Reset], Source={StaticResource Loc}}" Command="{x:Bind ViewModel.ResetCommand}" />
+                <ProgressRing IsActive="{x:Bind ViewModel.IsBusy}" Width="20" Height="20" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

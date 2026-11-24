@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="DesktopFlow.App.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:DefaultBindMode="OneWay">
+    <ScrollViewer Padding="28,20,28,28">
+        <StackPanel Spacing="16" MaxWidth="760">
+            <StackPanel Spacing="4">
+                <TextBlock Style="{StaticResource PageTitleStyle}" Text="{Binding [Settings_Title], Source={StaticResource Loc}}" />
+                <TextBlock Style="{StaticResource PageSubtitleStyle}" Text="{Binding [Settings_Subtitle], Source={StaticResource Loc}}" />
+            </StackPanel>
+            <InfoBar IsOpen="{x:Bind ViewModel.HasError}" Severity="Error" Message="{x:Bind ViewModel.ErrorMessage}" IsClosable="False" />
+            <Border Style="{StaticResource SurfaceBorderStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Style="{StaticResource SectionTitleStyle}" Text="{Binding [Settings_General], Source={StaticResource Loc}}" />
+                    <TextBlock Text="{Binding [Settings_Language], Source={StaticResource Loc}}" Foreground="{ThemeResource AppMutedBrush}" />
+                    <ComboBox ItemsSource="{x:Bind ViewModel.Languages}" SelectedItem="{x:Bind ViewModel.Language, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+                    <TextBlock Text="{Binding [Settings_LanguageNote], Source={StaticResource Loc}}" Foreground="{ThemeResource AppMutedBrush}" TextWrapping="WrapWholeWords" />
+                    <TextBlock Text="{Binding [Settings_Theme], Source={StaticResource Loc}}" Foreground="{ThemeResource AppMutedBrush}" />
+                    <ComboBox ItemsSource="{x:Bind ViewModel.Themes}" SelectedItem="{x:Bind ViewModel.ThemeChoice, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+                    <ToggleSwitch Header="{Binding [Settings_Startup], Source={StaticResource Loc}}" IsOn="{x:Bind ViewModel.StartWithWindows, Mode=TwoWay}" />
+                    <ToggleSwitch Header="{Binding [Settings_Minimized], Source={StaticResource Loc}}" IsOn="{x:Bind ViewModel.StartMinimized, Mode=TwoWay}" />
+                    <ToggleSwitch Header="{Binding [Settings_Tray], Source={StaticResource Loc}}" IsOn="{x:Bind ViewModel.MinimizeToTray, Mode=TwoWay}" />
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource SurfaceBorderStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Style="{StaticResource SectionTitleStyle}" Text="{Binding [Settings_Automation], Source={StaticResource Loc}}" />
+                    <ToggleSwitch Header="{Binding [Settings_MonitorDesktop], Source={StaticResource Loc}}" IsOn="{x:Bind ViewModel.MonitorDesktop, Mode=TwoWay}" />
+                    <ToggleSwitch Header="{Binding [Settings_MonitorDownloads], Source={StaticResource Loc}}" IsOn="{x:Bind ViewModel.MonitorDownloads, Mode=TwoWay}" />
+                    <ToggleSwitch Header="{Binding [Settings_Automatic], Source={StaticResource Loc}}" IsOn="{x:Bind ViewModel.Automatic, Mode=TwoWay}" />
+                    <ToggleSwitch Header="{Binding [Settings_Notifications], Source={StaticResource Loc}}" IsOn="{x:Bind ViewModel.Notifications, Mode=TwoWay}" />
+                    <ToggleSwitch Header="{Binding [Settings_RunOnStartup], Source={StaticResource Loc}}" IsOn="{x:Bind ViewModel.RunOnStartup, Mode=TwoWay}" />
+                    <TextBlock Text="{Binding [Settings_Delay], Source={StaticResource Loc}}" Foreground="{ThemeResource AppMutedBrush}" />
+                    <NumberBox Value="{x:Bind ViewModel.Delay, Mode=TwoWay}" Minimum="500" Maximum="60000" SmallChange="100" SpinButtonPlacementMode="Inline" />
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource SurfaceBorderStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Style="{StaticResource SectionTitleStyle}" Text="{Binding [Settings_Folders], Source={StaticResource Loc}}" />
+                    <TextBlock Text="{Binding [Settings_DesktopPath], Source={StaticResource Loc}}" Foreground="{ThemeResource AppMutedBrush}" />
+                    <Grid ColumnSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Text="{x:Bind ViewModel.DesktopPath, Mode=TwoWay}" />
+                        <Button Grid.Column="1" Content="{Binding [Settings_Browse], Source={StaticResource Loc}}" Command="{x:Bind ViewModel.BrowseDesktopCommand}" />
+                    </Grid>
+                    <TextBlock Text="{Binding [Settings_DownloadsPath], Source={StaticResource Loc}}" Foreground="{ThemeResource AppMutedBrush}" />
+                    <Grid ColumnSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Text="{x:Bind ViewModel.DownloadsPath, Mode=TwoWay}" />
+                        <Button Grid.Column="1" Content="{Binding [Settings_Browse], Source={StaticResource Loc}}" Command="{x:Bind ViewModel.BrowseDownloadsCommand}" />
+                    </Grid>
+                    <TextBlock Text="{Binding [Settings_Exclusions], Source={StaticResource Loc}}" Foreground="{ThemeResource AppMutedBrush}" TextWrapping="WrapWholeWords" />
+                    <TextBox Text="{x:Bind ViewModel.Exclusions, Mode=TwoWay}" AcceptsReturn="True" MinHeight="96" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource SurfaceBorderStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Style="{StaticResource SectionTitleStyle}" Text="{Binding [Settings_Safety], Source={StaticResource Loc}}" />
+                    <ToggleSwitch Header="{Binding [Settings_Undo], Source={StaticResource Loc}}" IsOn="{x:Bind ViewModel.UndoHistory, Mode=TwoWay}" />
+                    <ToggleSwitch Header="{Binding [Settings_Confirm], Source={StaticResource Loc}}" IsOn="{x:Bind ViewModel.ConfirmBulk, Mode=TwoWay}" />
+                    <ToggleSwitch Header="{Binding [Settings_Preview], Source={StaticResource Loc}}" IsOn="{x:Bind ViewModel.Preview, Mode=TwoWay}" />
+                    <ToggleSwitch Header="{Binding [Settings_Shortcuts], Source={StaticResource Loc}}" IsOn="{x:Bind ViewModel.KeepShortcuts, Mode=TwoWay}" />
+                    <ToggleSwitch Header="{Binding [Settings_Overwrite], Source={StaticResource Loc}}" IsOn="True" IsEnabled="False" />
+                    <TextBlock Text="{Binding [Settings_OverwriteNote], Source={StaticResource Loc}}" Foreground="{ThemeResource AppMutedBrush}" TextWrapping="WrapWholeWords" />
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource SurfaceBorderStyle}">
+                <StackPanel Spacing="8">
+                    <TextBlock Style="{StaticResource SectionTitleStyle}" Text="{Binding [Settings_About], Source={StaticResource Loc}}" />
+                    <TextBlock Text="{x:Bind ViewModel.VersionLabel}" />
+                    <TextBlock Text="{Binding [Settings_License], Source={StaticResource Loc}}" Foreground="{ThemeResource AppMutedBrush}" />
+                    <TextBlock Text="{x:Bind ViewModel.License}" />
+                    <TextBlock Text="{Binding [Settings_OpenSource], Source={StaticResource Loc}}" TextWrapping="WrapWholeWords" />
+                    <HyperlinkButton Content="{x:Bind ViewModel.Repository}" Command="{x:Bind ViewModel.OpenRepositoryCommand}" />
+                </StackPanel>
+            </Border>
+            <Button Content="{Binding [Settings_Save], Source={StaticResource Loc}}" Command="{x:Bind ViewModel.SaveCommand}" Style="{StaticResource AccentButtonStyle}" HorizontalAlignment="Left" MinWidth="160" />
+            <ProgressRing IsActive="{x:Bind ViewModel.IsBusy}" Width="20" Height="20" HorizontalAlignment="Left" />
+        </StackPanel>
+    </ScrollViewer>
+</Page>

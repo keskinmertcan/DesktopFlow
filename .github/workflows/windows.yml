@@ -1,0 +1,59 @@
+name: Windows
+
+on:
+  push:
+  pull_request:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Test
+        run: dotnet test DesktopFlow.slnx -c Release --nologo
+
+      - name: Publish unpackaged app
+        run: dotnet publish src/DesktopFlow.App/DesktopFlow.App.csproj -c Release -r win-x64 --self-contained true -p:WindowsPackageType=None -p:PublishTrimmed=false -p:PublishReadyToRun=false --nologo
+
+      - name: Zip unpackaged app
+        shell: pwsh
+        run: |
+          $source = Get-ChildItem -Recurse -Directory -Filter publish | Where-Object { $_.FullName -match 'win-x64\\publish$' } | Select-Object -First 1
+          if (-not $source) { throw "Publish output was not found." }
+          Compress-Archive -Path (Join-Path $source.FullName '*') -DestinationPath DesktopFlow-win-x64.zip
+
+      - name: Upload unpackaged app
+        uses: actions/upload-artifact@v4
+        with:
+          name: DesktopFlow-win-x64
+          path: DesktopFlow-win-x64.zip
+
+      - name: Build signed MSIX with a throwaway certificate
+        if: github.event_name == 'release'
+        shell: pwsh
+        run: |
+          $cert = New-SelfSignedCertificate -Subject "CN=DesktopFlow" -Type CodeSigningCert -CertStoreLocation Cert:\CurrentUser\My
+          $password = -join ((48..57 + 65..90 + 97..122) | Get-Random -Count 24 | ForEach-Object { [char]$_ })
+          $secure = ConvertTo-SecureString -String $password -Force -AsPlainText
+          $pfx = Join-Path $PWD "desktopflow-ci.pfx"
+          Export-PfxCertificate -Cert $cert -FilePath $pfx -Password $secure | Out-Null
+          dotnet publish src/DesktopFlow.App/DesktopFlow.App.csproj -c Release -r win-x64 -p:WindowsPackageType=MSIX -p:GenerateAppxPackageOnBuild=true -p:AppxPackageSigningEnabled=true -p:PackageCertificateKeyFile="$pfx" -p:PackageCertificatePassword="$password" -p:AppxBundle=Never --nologo
+          $package = Get-ChildItem -Recurse -Filter *.msix | Select-Object -First 1
+          if (-not $package) { throw "MSIX package was not produced." }
+          Copy-Item $package.FullName DesktopFlow.msix
+          Remove-Item $pfx
+
+      - name: Upload MSIX
+        if: github.event_name == 'release'
+        uses: actions/upload-artifact@v4
+        with:
+          name: DesktopFlow-msix
+          path: DesktopFlow.msix

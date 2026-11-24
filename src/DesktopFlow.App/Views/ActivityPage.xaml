@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Name="ActivityRoot"
+    x:Class="DesktopFlow.App.Views.ActivityPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:DesktopFlow.App.ViewModels"
+    x:DefaultBindMode="OneWay">
+    <Grid Padding="28,20,28,28" RowSpacing="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Spacing="4">
+            <TextBlock Style="{StaticResource PageTitleStyle}" Text="{Binding [Activity_Title], Source={StaticResource Loc}}" />
+            <TextBlock Style="{StaticResource PageSubtitleStyle}" Text="{Binding [Activity_Subtitle], Source={StaticResource Loc}}" />
+        </StackPanel>
+        <InfoBar Grid.Row="1" IsOpen="{x:Bind ViewModel.HasError}" Severity="Error" Message="{x:Bind ViewModel.ErrorMessage}" IsClosable="False" />
+        <StackPanel Grid.Row="2" Spacing="8">
+            <TextBox PlaceholderText="{Binding [Activity_Search], Source={StaticResource Loc}}" Text="{x:Bind ViewModel.Search, Mode=TwoWay}" />
+            <Grid ColumnSpacing="8" RowSpacing="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <CalendarDatePicker PlaceholderText="{Binding [Activity_From], Source={StaticResource Loc}}" Date="{x:Bind ViewModel.From, Mode=TwoWay}" />
+                <CalendarDatePicker Grid.Column="1" PlaceholderText="{Binding [Activity_To], Source={StaticResource Loc}}" Date="{x:Bind ViewModel.To, Mode=TwoWay}" />
+                <ComboBox Grid.Column="2" ItemsSource="{x:Bind ViewModel.Kinds}" SelectedItem="{x:Bind ViewModel.SelectedKind, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+                <ComboBox Grid.Column="3" ItemsSource="{x:Bind ViewModel.Statuses}" SelectedItem="{x:Bind ViewModel.SelectedStatus, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+            </Grid>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <ComboBox MinWidth="220" ItemsSource="{x:Bind ViewModel.Categories}" SelectedItem="{x:Bind ViewModel.SelectedCategory, Mode=TwoWay}" />
+                <Button Content="{Binding [Activity_Apply], Source={StaticResource Loc}}" Command="{x:Bind ViewModel.ApplyCommand}" Style="{StaticResource AccentButtonStyle}" />
+                <Button Content="{Binding [Activity_UndoSelected], Source={StaticResource Loc}}" Command="{x:Bind ViewModel.UndoSelectedCommand}" />
+                <ProgressRing IsActive="{x:Bind ViewModel.IsBusy}" Width="20" Height="20" />
+            </StackPanel>
+        </StackPanel>
+        <Grid Grid.Row="3">
+            <TextBlock Text="{Binding [Activity_Empty], Source={StaticResource Loc}}" Foreground="{ThemeResource AppMutedBrush}" Visibility="{x:Bind ViewModel.HasRows, Converter={StaticResource InverseBoolToVisibility}}" />
+            <ListView x:Name="HistoryList" ItemsSource="{x:Bind ViewModel.Rows}" SelectionMode="Multiple" SelectionChanged="HistoryList_SelectionChanged">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:ActivityRowViewModel">
+                        <Grid ColumnSpacing="12" Padding="4,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="160" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{x:Bind When, Mode=OneTime}" TextTrimming="CharacterEllipsis" />
+                            <StackPanel Grid.Column="1" Spacing="2">
+                                <TextBlock Text="{x:Bind FileName, Mode=OneTime}" TextTrimming="CharacterEllipsis" />
+                                <TextBlock Text="{x:Bind From, Mode=OneTime}" Foreground="{ThemeResource AppMutedBrush}" FontSize="12" TextTrimming="CharacterEllipsis" />
+                                <TextBlock Text="{x:Bind To, Mode=OneTime}" Foreground="{ThemeResource AppMutedBrush}" FontSize="12" TextTrimming="CharacterEllipsis" />
+                                <TextBlock Text="{x:Bind Details, Mode=OneTime}" Foreground="{ThemeResource AppErrorBrush}" FontSize="12" TextWrapping="WrapWholeWords" />
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" Text="{x:Bind Kind, Mode=OneTime}" TextWrapping="WrapWholeWords" />
+                            <TextBlock Grid.Column="3" Text="{x:Bind Status, Mode=OneTime}" TextWrapping="WrapWholeWords" />
+                            <Button Grid.Column="4" Content="{Binding [Activity_Undo], Source={StaticResource Loc}}" IsEnabled="{x:Bind CanUndo, Mode=OneTime}" Command="{Binding ViewModel.UndoCommand, ElementName=ActivityRoot}" CommandParameter="{x:Bind}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
+</Page>
