@@ -32,6 +32,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IActivityStore, SqliteActivityStore>();
         services.AddSingleton<IRuleStore, SqliteRuleStore>();
         services.AddSingleton<IFileScanner, FileScanner>();
+        services.AddSingleton<IStorageAnalyzer, StorageAnalyzer>();
         services.AddSingleton<IFileLockProbe, FileLockProbe>();
         services.AddSingleton<IFileStabilityWaiter, FileStabilityWaiter>();
         services.AddSingleton<IFileMover, SafeFileMover>();

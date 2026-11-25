@@ -20,6 +20,21 @@ public sealed class WindowsShellLauncher : IShellLauncher
         });
     }
 
+    public void Reveal(string path)
+    {
+        if (!File.Exists(path) && !Directory.Exists(path))
+        {
+            throw new FileNotFoundException(path);
+        }
+
+        Process.Start(new ProcessStartInfo
+        {
+            FileName = "explorer.exe",
+            Arguments = $"/select,\"{path}\"",
+            UseShellExecute = true,
+        });
+    }
+
     public void OpenUrl(string url)
     {
         if (!Uri.TryCreate(url, UriKind.Absolute, out var uri) || uri.Scheme != Uri.UriSchemeHttps)

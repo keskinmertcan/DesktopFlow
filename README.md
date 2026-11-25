@@ -15,6 +15,7 @@ The first launch is a setup wizard. It shows what would move and waits for you t
 - Background watching that waits until a download has finished writing.
 - Activity history in a local SQLite database, with search, filters, and undo.
 - Notification-area icon, optional start with Windows, and English and Turkish interface text.
+- A storage view for drive space, the largest folders, file types, and files that are exact copies. Windows system locations are skipped, and nothing is deleted.
 
 Folders, shortcuts, `desktop.ini`, hidden files, and system files are left alone. Details are in [docs/safety.md](docs/safety.md).
 

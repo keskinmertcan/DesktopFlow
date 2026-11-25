@@ -96,6 +96,7 @@ public partial class App : Application
             builder.Services.AddTransient<OrganizerViewModel>();
             builder.Services.AddTransient<RulesViewModel>();
             builder.Services.AddTransient<ActivityViewModel>();
+            builder.Services.AddTransient<StorageViewModel>();
             builder.Services.AddTransient<SettingsViewModel>();
             builder.Services.AddTransient<SetupViewModel>();
             builder.Services.AddSingleton<MainWindow>();

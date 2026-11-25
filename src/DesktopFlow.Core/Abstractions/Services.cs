@@ -1,4 +1,5 @@
 using DesktopFlow.Core.Models;
+using DesktopFlow.Core.Storage;
 
 namespace DesktopFlow.Core.Abstractions;
 
@@ -168,5 +169,19 @@ public interface IShellLauncher
 {
     void OpenFolder(string path);
 
+    void Reveal(string path);
+
     void OpenUrl(string url);
+}
+
+public interface IStorageAnalyzer
+{
+    IReadOnlyList<DriveSpace> ListDrives();
+
+    IReadOnlyList<string> FixedDriveRoots();
+
+    Task<StorageReport> AnalyzeAsync(
+        IReadOnlyList<string> roots,
+        IProgress<StorageScanProgress>? progress,
+        CancellationToken cancellationToken);
 }

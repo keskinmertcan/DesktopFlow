@@ -21,6 +21,7 @@
                 <NavigationViewItem Tag="organizer" Icon="List" Content="{Binding [Nav_Organizer], Source={StaticResource Loc}}" />
                 <NavigationViewItem Tag="rules" Icon="Filter" Content="{Binding [Nav_Rules], Source={StaticResource Loc}}" />
                 <NavigationViewItem Tag="activity" Icon="Clock" Content="{Binding [Nav_Activity], Source={StaticResource Loc}}" />
+                <NavigationViewItem Tag="storage" Icon="Library" Content="{Binding [Nav_Storage], Source={StaticResource Loc}}" />
                 <NavigationViewItem Tag="settings" Icon="Setting" Content="{Binding [Nav_Settings], Source={StaticResource Loc}}" />
             </NavigationView.MenuItems>
             <NavigationView.PaneFooter>

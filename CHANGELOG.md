@@ -11,3 +11,4 @@ First release of DesktopFlow for Windows 11 x64.
 - Keep activity history in a local SQLite database and undo moves, including after the app restarts.
 - Close the window to the notification area, or exit completely from the tray menu.
 - Optional Windows startup, English and Turkish interface text, and a first-run setup that does not move files until you confirm.
+- Storage view for drive space, the largest folders, file types, and duplicate files, excluding Windows system locations.

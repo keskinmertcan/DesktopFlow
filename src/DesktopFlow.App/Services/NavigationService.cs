@@ -38,6 +38,7 @@ public sealed class NavigationService
             "organizer" => new OrganizerPage(_services.GetRequiredService<OrganizerViewModel>()),
             "rules" => new RulesPage(_services.GetRequiredService<RulesViewModel>()),
             "activity" => new ActivityPage(_services.GetRequiredService<ActivityViewModel>()),
+            "storage" => new StoragePage(_services.GetRequiredService<StorageViewModel>()),
             "settings" => new SettingsPage(_services.GetRequiredService<SettingsViewModel>()),
             "setup" => new SetupPage(_services.GetRequiredService<SetupViewModel>()),
             _ => throw new ArgumentOutOfRangeException(nameof(tag), tag, "Unknown page."),
